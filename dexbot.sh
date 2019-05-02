@@ -27,7 +27,6 @@ function number2words() {
 }
 
 function hundreds2words() {
-
     local -i num=$((10#$1))
     if ((num < 20)); then
         echo "${digits[num]}"
