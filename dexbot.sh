@@ -27,6 +27,7 @@ function number2words() {
 }
 
 function hundreds2words() {
+
     local -i num=$((10#$1))
     if ((num < 20)); then
         echo "${digits[num]}"
@@ -244,4 +245,3 @@ while true; do
         * ) echo 'Please input Y or N';;
     esac
 done
-
