@@ -1,0 +1,45 @@
+#!/usr/bin/expect
+
+while true {
+    set val 0
+    set acc_from "main"
+    set acc_to "tbnb1xf77kcq4aal2d8qusrcda0g4fd2szscpy7rqfd"
+    set chain_id "Binance-Chain-Nile"
+    set node "http://data-seed-pre-0-s3.binance.org:80"
+    set bnbcli "./tbnbcli"
+    set pair "TCAN-014_BNB"
+    set sideBuy "1"
+    set sideSell "2"
+    set ps "113300000"
+    set qs "1000000000"
+
+    set ps1 [expr {$ps - 10000000}]
+    set qs1 [expr {$qs + 100000000}]
+    set ps2 [expr {$ps1 - 10000000}]
+    set qs2 [expr {$qs1 + 100000000}]
+    set ps3 [expr {$ps2 - 10000000}]
+    set qs3 [expr {$qs3 + 100000000}]
+
+    set max 2
+    set password [lindex $argv 0]
+
+    spawn  $bnbcli dex order --from $acc_from --symbol $pair --side $sideSell --price $ps1 --qty $qs1 --chain-id $chain_id --node=$node
+    expect "Password to sign with 'main':"
+    send "$password\r"
+    interact
+
+    spawn  $bnbcli dex order --from $acc_from --symbol $pair --side $sideSell --price $ps1 --qty $qs1 --chain-id $chain_id --node=$node
+    expect "Password to sign with 'main':"
+    send "$password\r"
+    interact
+
+    spawn  $bnbcli dex order --from $acc_from --symbol $pair --side $sideSell --price $ps1 --qty $qs1 --chain-id $chain_id --node=$node
+    expect "Password to sign with 'main':"
+    send "$password\r"
+    interact
+
+    incr $val
+    if {$val == $max} break
+}
+
+#spawn $bnbcli send --from $acc_from --to $acc_to --amount=10000000:BNB --chain-id $chain_id --node=$node
