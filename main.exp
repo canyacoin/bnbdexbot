@@ -1,0 +1,81 @@
+#!/usr/bin/expect
+
+set val 0
+
+while true {
+
+    set acc_from "trade"
+    set chain_id "Binance-Chain-Tigris"
+    set node "http://dataseed1.binance.org:80"
+    set bnbcli "./bnbcli"
+    set pair "CAN-677_BNB"
+    set sideBuy "1"
+    set sideSell "2"
+    set ps "155000"
+    set qs "10000000"
+
+    set pd "5000"
+    set qd "100000000"
+
+    set priceUpper [expr {$ps + ($pd*10)}]
+    set priceLower [expr {$ps - ($pd*10)}]
+
+    set ps1 [expr {$ps - 5000}]
+    set qs1 [expr {$qs + 10000000}]
+    set ps2 [expr {$ps1 - 5000}]
+    set qs2 [expr {$qs1 + 10000000}]
+    set ps3 [expr {$ps2 - 5000}]
+    set qs3 [expr {$qs2 + 10000000}]
+
+    set max 100
+    set password [lindex $argv 0]
+
+    # BUYING
+    for {set x 0} {$x<12} {incr x} {
+
+    set price [expr {$priceLower + ($pd * $x)}]
+    set qty [expr {$qs + (10000000 * $x) * 1000}]
+
+    for {set y 0} {$y<12000000} {incr y} {
+    set z 1200
+    set z [expr {($z * $z * $z * $z)}]
+    }
+
+    puts $price
+    puts $qty
+
+    spawn  $bnbcli dex order --from $acc_from --symbol $pair --side $sideBuy --price $price --qty $qty --chain-id $chain_id --node=$node
+    expect "Password to sign with 'trade':"
+    send "$password\r"
+    interact
+
+    }
+
+    # SELLING
+    for {set x 0} {$x<12} {incr x} {
+
+    set price [expr {$priceUpper - ($pd * $x)}]
+    set qty [expr {$qs + (10000000 * $x) * 1000}]
+
+    for {set y 0} {$y<12000000} {incr y} {
+    set z 1200
+    set z [expr {($z * $z * $z * $z)}]
+    }
+
+    puts $price
+    puts $qty
+
+    spawn  $bnbcli dex order --from $acc_from --symbol $pair --side $sideSell --price $price --qty $qty --chain-id $chain_id --node=$node
+    expect "Password to sign with 'trade':"
+    send "$password\r"
+    interact
+
+    }
+
+
+
+
+    incr val
+    puts $val
+    if {$val == $max} break
+}
