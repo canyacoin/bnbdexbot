@@ -17,8 +17,8 @@ while true {
     set pd "5000"
     set qd "100000000"
 
-    set priceUpper [expr {$ps + ($pd*10)}]
-    set priceLower [expr {$ps - ($pd*10)}]
+    set priceUpper [expr {$ps + $pd * 10}]
+    set priceLower [expr {$ps - $pd * 10}]
 
     # NOT USED
     set ps1 [expr {$ps - 5000}]
@@ -34,8 +34,8 @@ while true {
     # BUYING
     for {set x 0} {$x<12} {incr x} {
 
-    set price [expr {$priceLower + ($pd * $x)}]
-    set qty [expr {$qs + (10000000 * $x) * 1000}]
+    set price [expr {$priceLower + $pd * $x}]
+    set qty [expr {$qs + 10000000 * $x * 1000}]
 
     for {set y 0} {$y<12000000} {incr y} {
     set z 1200
@@ -55,8 +55,8 @@ while true {
     # SELLING
     for {set x 0} {$x<12} {incr x} {
 
-    set price [expr {$priceUpper - ($pd * $x)}]
-    set qty [expr {$qs + (10000000 * $x) * 1000}]
+    set price [expr {$priceUpper - $pd * $x}]
+    set qty [expr {$qs + 10000000 * $x * 1000}]
 
     for {set y 0} {$y<12000000} {incr y} {
     set z 1200
